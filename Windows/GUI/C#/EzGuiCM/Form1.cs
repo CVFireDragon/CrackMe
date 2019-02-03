@@ -1,20 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace EzGuiCM
 {
     public partial class Form1 : Form
     {
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        private static extern int SendMessage(IntPtr hWnd, int msg, int wParam, [MarshalAs(UnmanagedType.LPWStr)]string lParam);
+        const int EM_SETCUEBANNER = 0x1501;
+
         public Form1()
         {
             InitializeComponent();
+            SendMessage(textBox1.Handle, EM_SETCUEBANNER, 1, "Case Sensitive!");
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -26,13 +25,11 @@ namespace EzGuiCM
         {
             if (textBox1.Text.Contains("MrSaturn"))
             {
-                Form3 CorrectForm = new Form3();
-                CorrectForm.Show();
+                MessageBox.Show("Correct Key!","Nice!");
             }
             else
             {
-                Form2 InCorrectForm = new Form2();
-                InCorrectForm.Show();
+                MessageBox.Show("Incorrect Key!", "Nope...");
             }
         }
     }
